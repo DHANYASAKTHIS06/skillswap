@@ -1,0 +1,108 @@
+1️⃣ Welcome / Landing Page
+
+Create a modern hero section with:
+
+Heading:
+“Welcome to the College Skill Exchange Portal”
+
+Subheading:
+Connect. Learn. Teach. Grow Together.
+
+Two Primary Buttons:
+
+Sign In
+
+Create Account
+
+Design Style:
+
+Gradient background (Indigo → Blue)
+
+Glassmorphism cards
+
+Smooth hover animations
+
+Subtle academic-themed illustrations
+
+2️⃣ Create Account Page (Functional UX Design)
+
+Fields:
+
+Full Name
+
+College Email (must end with @cit.edu.in)
+
+Password
+
+Confirm Password
+
+Role Selection (Tutor / Student)
+
+Below form:
+“Already have an account? Sign In”
+
+UI Requirements:
+
+Real-time validation states (success + error)
+
+Password strength meter
+
+Animated error messages
+
+Green checkmarks for valid inputs
+
+CTA Button:
+Create Account (clearly primary)
+
+3️⃣ Sign In Page
+
+Fields:
+
+College Email
+
+Password
+
+Design:
+
+Minimal and premium
+
+Floating labels
+
+Error card animation if account doesn’t exist
+
+After successful login:
+Show a clean role-based redirection screen:
+
+“Choose Your Dashboard”
+
+Tutor Dashboard
+
+Student Dashboard
+
+4️⃣ Dynamic System UI Indication
+
+Design subtle UI indicators:
+
+“Data synced with database”
+
+Loading spinner state
+
+Empty state design (No tutors yet)
+
+Success animation after registration
+
+Important:
+No static data placeholders.
+All tutor cards must look dynamically generated.
+
+5️⃣ Style Direction
+
+Modern SaaS design
+
+Soft rounded corners
+
+Indigo / Violet primary theme
+
+Clean typography (Inter / Poppins)
+
+Gamified badges for tutors
