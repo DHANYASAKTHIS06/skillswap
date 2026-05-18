@@ -71,7 +71,13 @@ export interface ApiResult<T = undefined> {
   data?: T;
 }
 
-// ─── HTTP Helper ─────────────────────────────────────────────────────────────
+// Helper to join URL paths safely, preventing double slashes or missing slashes
+function joinUrl(base: string, path: string): string {
+  const cleanBase = base.replace(/\/+$/, "");
+  const cleanPath = path.replace(/^\/+/, "");
+  return `${cleanBase}/${cleanPath}`;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function request(
   endpoint: string,
@@ -87,7 +93,8 @@ async function request(
     headers["Authorization"] = `Bearer ${token}`;
   }
 
-  const res = await fetch(`${BASE_URL}${endpoint}`, {
+  const url = joinUrl(BASE_URL, endpoint);
+  const res = await fetch(url, {
     ...options,
     headers,
   });
