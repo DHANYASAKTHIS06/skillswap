@@ -23,7 +23,12 @@ async function connectToDatabase() {
     throw new Error("MONGODB_URI environment variable is missing in Vercel configuration");
   }
 
-  await mongoose.connect(MONGODB_URI);
+  // Connect using the robust timeout options requested
+  await mongoose.connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 30000,
+  });
   isConnected = true;
 }
 
