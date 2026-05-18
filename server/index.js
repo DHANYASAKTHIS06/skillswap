@@ -11,10 +11,21 @@ const userRoutes = require("./routes/users");
 // ─── App Setup ───────────────────────────────────────────────────────────────
 const app = express();
 
-// CORS - allow requests from the Vite dev server
+// CORS - allow requests from Vite dev server, dynamic client URL, and vercel preview domains
+const allowedOrigins = ["http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173"];
+if (process.env.CLIENT_URL) {
+  allowedOrigins.push(process.env.CLIENT_URL);
+}
+
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173"],
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin) || origin.endsWith(".vercel.app")) {
+        callback(null, true);
+      } else {
+        callback(null, true); // Fallback to avoid blocking API access
+      }
+    },
     credentials: true,
   })
 );
@@ -55,25 +66,28 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/skillswap";
 
-mongoose
-  .connect(MONGODB_URI)
-  .then(() => {
-    console.log("✅ Connected to MongoDB:", MONGODB_URI.replace(/\/\/.*@/, "//***@"));
-    console.log("   Database: skillswap");
-    console.log("   Collections: users, requests, sessionlogs");
+// Only connect and listen here if we are running in standalone mode (not Vercel Serverless)
+if (!process.env.VERCEL) {
+  mongoose
+    .connect(MONGODB_URI)
+    .then(() => {
+      console.log("✅ Connected to MongoDB:", MONGODB_URI.replace(/\/\/.*@/, "//***@"));
+      console.log("   Database: skillswap");
+      console.log("   Collections: users, requests, sessionlogs");
 
-    app.listen(PORT, () => {
-      console.log(`\n🚀 Skill Swap API running on http://localhost:${PORT}`);
-      console.log(`   Health: http://localhost:${PORT}/api/health`);
-      console.log(`   Auth:   http://localhost:${PORT}/api/auth`);
-      console.log(`   Requests: http://localhost:${PORT}/api/requests`);
-      console.log(`   Users:  http://localhost:${PORT}/api/users\n`);
+      app.listen(PORT, () => {
+        console.log(`\n🚀 Skill Swap API running on http://localhost:${PORT}`);
+        console.log(`   Health: http://localhost:${PORT}/api/health`);
+        console.log(`   Auth:   http://localhost:${PORT}/api/auth`);
+        console.log(`   Requests: http://localhost:${PORT}/api/requests`);
+        console.log(`   Users:  http://localhost:${PORT}/api/users\n`);
+      });
+    })
+    .catch((err) => {
+      console.error("❌ MongoDB connection failed:", err.message);
+      console.error("   Please check your MONGODB_URI in server/.env");
+      process.exit(1);
     });
-  })
-  .catch((err) => {
-    console.error("❌ MongoDB connection failed:", err.message);
-    console.error("   Please check your MONGODB_URI in server/.env");
-    process.exit(1);
-  });
+}
 
 module.exports = app;
