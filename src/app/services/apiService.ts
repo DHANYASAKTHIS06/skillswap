@@ -2,7 +2,7 @@
 // Centralized HTTP client for all backend requests.
 // Base URL points to our Express server.
 
-const BASE_URL = (import.meta as any).env?.VITE_API_URL || "/api";
+const BASE_URL = (import.meta as any).env?.VITE_API_URL || "https://skillswap-4-qs0n.onrender.com/api";
 
 // ─── Token Management ────────────────────────────────────────────────────────
 const TOKEN_KEY = "skillswap_token";
